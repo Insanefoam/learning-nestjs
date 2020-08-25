@@ -52,7 +52,7 @@ export class ColumnsController {
   updateById(
     @Param("id") id: string,
     @Body() updateColumnDto: CreateColumnDto,
-  ): string {
-    return `Update column #${id} to title ${updateColumnDto.title}`;
+  ): Column[] {
+    return this.columnsServices.updateById(id, updateColumnDto);
   }
 }

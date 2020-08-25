@@ -24,4 +24,10 @@ export class ColumnsService {
   deleteById(id: string): Column[] {
     return (this.columns = this.columns.filter(column => column.id !== id));
   }
+
+  updateById(id: string, newColumn: Column) {
+    return (this.columns = this.columns.map(column =>
+      column.id === id ? { ...column, ...newColumn } : column,
+    ));
+  }
 }
