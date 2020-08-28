@@ -1,8 +1,12 @@
 import { Injectable, HttpException } from "@nestjs/common";
 import { Column } from "./interfaces/column.interface";
+import { CardsService } from "src/cards/cards.service";
+import Card from "src/cards/interfaces/card.interface";
 
 @Injectable()
 export class ColumnsService {
+  constructor(private readonly cardsService: CardsService) {}
+
   private columns: Column[] = [
     { id: "0", title: "Todo" },
     { id: "1", title: "In Progress" },
@@ -33,5 +37,9 @@ export class ColumnsService {
     return (this.columns = this.columns.map(column =>
       column.id === id ? { ...column, ...newColumn } : column,
     ));
+  }
+
+  getCardsForColumn(id: string): Card[] {
+    return this.cardsService.getAll().filter(card => card.columnId === id);
   }
 }

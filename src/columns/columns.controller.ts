@@ -58,9 +58,7 @@ export class ColumnsController {
   }
 
   @Get("/cards/:id")
-  getCardsForColumn(@Param("id") id: string): Card[] | void {
-    console.log("In get cards for column method", id);
-    console.log(this.cardsService.getAll());
-    return this.cardsService.getAll().filter(card => card.columnId === id);
+  getCardsForColumn(@Param("id") id: string): Card[] {
+    return this.columnsServices.getCardsForColumn(id);
   }
 }

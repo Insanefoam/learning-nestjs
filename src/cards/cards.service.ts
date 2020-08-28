@@ -5,6 +5,8 @@ import Card from "./interfaces/card.interface";
 export class CardsService {
   private cards: Card[] = [
     { id: "0", title: "Card 0 title", columnId: "0", commentsIds: [] },
+    { id: "1", title: "Card 1 title", columnId: "1", commentsIds: [] },
+    { id: "2", title: "Card 2 title", columnId: "1", commentsIds: [] },
   ];
 
   getAll(): Card[] {
