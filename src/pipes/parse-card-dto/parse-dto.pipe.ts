@@ -8,7 +8,7 @@ import {
 import { ObjectSchema } from "@hapi/joi";
 
 @Injectable()
-export class ParseCardDtoPipe implements PipeTransform {
+export class ParseDtoPipe implements PipeTransform {
   constructor(private schema: ObjectSchema) {}
 
   transform(value: any, metadata: ArgumentMetadata) {

@@ -11,7 +11,6 @@ import {
   Delete,
   Put,
   UseFilters,
-  ParseIntPipe,
 } from "@nestjs/common";
 import { Request } from "express";
 import { CreateColumnDto } from "./dto/create-column.dto";
@@ -19,6 +18,8 @@ import { ColumnsService } from "./columns.service";
 import { Column } from "./interfaces/column.interface";
 import Card from "src/cards/interfaces/card.interface";
 import { HttpfilterFilter } from "src/filters/httpfilter/httpfilter.filter";
+import { ParseDtoPipe } from "src/pipes/parse-card-dto/parse-dto.pipe";
+import { ColumnSchema } from "src/schemas/joi/ColumnSchema";
 
 @Controller("columns")
 export class ColumnsController {
@@ -56,7 +57,7 @@ export class ColumnsController {
   @Put(":id")
   updateById(
     @Param("id") id: string,
-    @Body() updateColumnDto: CreateColumnDto,
+    @Body(new ParseDtoPipe(ColumnSchema)) updateColumnDto: CreateColumnDto,
   ): Column[] {
     return this.columnsServices.updateById(id, updateColumnDto);
   }

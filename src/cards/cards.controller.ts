@@ -13,8 +13,8 @@ import Card from "./interfaces/card.interface";
 import { CardsService } from "./cards.service";
 import { CreateCardDto } from "./dto/create-card.dto";
 import { HttpfilterFilter } from "src/filters/httpfilter/httpfilter.filter";
-import { ParseCardDtoPipe } from "src/pipes/parse-card-dto/parse-card-dto.pipe";
-import CardSchema from "src/schemas/joi/cardSchema";
+import { ParseDtoPipe } from "src/pipes/parse-card-dto/parse-dto.pipe";
+import { CardSchema } from "src/schemas/joi/CardSchema";
 
 @Controller("cards")
 export class CardsController {
@@ -32,7 +32,7 @@ export class CardsController {
 
   @Post()
   @UseFilters(HttpfilterFilter)
-  addCard(@Body(new ParseCardDtoPipe(CardSchema)) card: CreateCardDto): Card[] {
+  addCard(@Body(new ParseDtoPipe(CardSchema)) card: CreateCardDto): Card[] {
     return this.cardsService.addCard(card);
   }
 
