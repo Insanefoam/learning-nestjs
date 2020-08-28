@@ -1,4 +1,4 @@
-import { Injectable, HttpException } from "@nestjs/common";
+import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 import { Column } from "./interfaces/column.interface";
 import { CardsService } from "src/cards/cards.service";
 import Card from "src/cards/interfaces/card.interface";
@@ -23,7 +23,10 @@ export class ColumnsService {
 
   addColumn(column: Column): Column[] {
     if (this.columns.find(el => el.id === column.id)) {
-      throw new HttpException("Column with that ID already exists", 402);
+      throw new HttpException(
+        "Column with that ID already exists",
+        HttpStatus.CONFLICT,
+      );
     } else {
       return (this.columns = [...this.columns, column]);
     }

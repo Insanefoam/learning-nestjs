@@ -10,12 +10,14 @@ import {
   Body,
   Delete,
   Put,
+  UseFilters,
 } from "@nestjs/common";
 import { Request } from "express";
 import { CreateColumnDto } from "./dto/create-column.dto";
 import { ColumnsService } from "./columns.service";
 import { Column } from "./interfaces/column.interface";
 import Card from "src/cards/interfaces/card.interface";
+import { HttpfilterFilter } from "src/filters/httpfilter/httpfilter.filter";
 
 @Controller("columns")
 export class ColumnsController {
@@ -40,6 +42,7 @@ export class ColumnsController {
 
   @HttpCode(202)
   @Post("")
+  @UseFilters(HttpfilterFilter)
   addColumn(@Body() createColumnDto: CreateColumnDto): Column[] {
     return this.columnsServices.addColumn(createColumnDto);
   }

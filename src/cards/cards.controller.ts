@@ -6,10 +6,12 @@ import {
   Delete,
   Put,
   Body,
+  UseFilters,
 } from "@nestjs/common";
 import Card from "./interfaces/card.interface";
 import { CardsService } from "./cards.service";
 import { CreateCardDto } from "./dto/create-card.dto";
+import { HttpfilterFilter } from "src/filters/httpfilter/httpfilter.filter";
 
 @Controller("cards")
 export class CardsController {
@@ -26,6 +28,7 @@ export class CardsController {
   }
 
   @Post()
+  @UseFilters(HttpfilterFilter)
   addCard(@Body() card: CreateCardDto): Card[] {
     return this.cardsService.addCard(card);
   }
