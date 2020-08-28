@@ -15,6 +15,7 @@ import { Request } from "express";
 import { CreateColumnDto } from "./dto/create-column.dto";
 import { ColumnsService } from "./columns.service";
 import { Column } from "./interfaces/column.interface";
+import Card from "src/cards/interfaces/card.interface";
 
 @Controller("columns")
 export class ColumnsController {
@@ -54,5 +55,12 @@ export class ColumnsController {
     @Body() updateColumnDto: CreateColumnDto,
   ): Column[] {
     return this.columnsServices.updateById(id, updateColumnDto);
+  }
+
+  @Get("/cards/:id")
+  getCardsForColumn(@Param("id") id: string): Card[] | void {
+    console.log("In get cards for column method", id);
+    console.log(this.cardsService.getAll());
+    return this.cardsService.getAll().filter(card => card.columnId === id);
   }
 }

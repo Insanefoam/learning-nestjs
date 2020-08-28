@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Post, Delete, Put } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Delete,
+  Put,
+  Body,
+} from "@nestjs/common";
 import Card from "./interfaces/card.interface";
 import { CardsService } from "./cards.service";
 import { CreateCardDto } from "./dto/create-card.dto";
@@ -18,7 +26,7 @@ export class CardsController {
   }
 
   @Post()
-  addCard(@Param() card: CreateCardDto): Card[] {
+  addCard(@Body() card: CreateCardDto): Card[] {
     return this.cardsService.addCard(card);
   }
 

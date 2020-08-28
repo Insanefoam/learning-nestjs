@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, HttpException } from "@nestjs/common";
 import Card from "./interfaces/card.interface";
 
 @Injectable()
@@ -25,7 +25,11 @@ export class CardsService {
     ));
   }
 
-  addCard(card: Card) {
-    return (this.cards = [...this.cards, card]);
+  addCard(card: Card): Card[] {
+    if (this.cards.find(el => el.id === card.id)) {
+      throw new HttpException("Card with that ID already exists", 402);
+    } else {
+      return (this.cards = [...this.cards, card]);
+    }
   }
 }

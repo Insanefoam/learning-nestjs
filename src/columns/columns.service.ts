@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, HttpException } from "@nestjs/common";
 import { Column } from "./interfaces/column.interface";
 
 @Injectable()
@@ -18,7 +18,11 @@ export class ColumnsService {
   }
 
   addColumn(column: Column): Column[] {
-    return (this.columns = [...this.columns, column]);
+    if (this.columns.find(el => el.id === column.id)) {
+      throw new HttpException("Column with that ID already exists", 402);
+    } else {
+      return (this.columns = [...this.columns, column]);
+    }
   }
 
   deleteById(id: string): Column[] {
