@@ -11,7 +11,7 @@ import { ObjectSchema } from "@hapi/joi";
 export class ParseDtoPipe implements PipeTransform {
   constructor(private schema: ObjectSchema) {}
 
-  transform(value: any, metadata: ArgumentMetadata) {
+  transform(value: any, _: ArgumentMetadata) {
     const { error } = this.schema.validate(value);
     if (error) {
       throw new HttpException(

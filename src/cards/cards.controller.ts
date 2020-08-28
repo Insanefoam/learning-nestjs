@@ -7,7 +7,7 @@ import {
   Put,
   Body,
   UseFilters,
-  ParseIntPipe,
+  UseGuards,
 } from "@nestjs/common";
 import Card from "./interfaces/card.interface";
 import { CardsService } from "./cards.service";
@@ -15,8 +15,10 @@ import { CreateCardDto } from "./dto/create-card.dto";
 import { HttpfilterFilter } from "src/filters/httpfilter/httpfilter.filter";
 import { ParseDtoPipe } from "src/pipes/parse-card-dto/parse-dto.pipe";
 import { CardSchema } from "src/schemas/joi/CardSchema";
+import { AuthGuard } from "src/guards/auth/auth.guard";
 
 @Controller("cards")
+@UseGuards(AuthGuard)
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
 
