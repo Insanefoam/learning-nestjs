@@ -11,6 +11,7 @@ import {
   Delete,
   Put,
   UseFilters,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { Request } from "express";
 import { CreateColumnDto } from "./dto/create-column.dto";
