@@ -1,7 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 import { Column } from "./interfaces/column.interface";
 import { CardsService } from "src/cards/cards.service";
-import Card from "src/cards/interfaces/card.interface";
+import { Card } from "src/cards/schemas/card.schema";
 
 @Injectable()
 export class ColumnsService {
@@ -42,7 +42,7 @@ export class ColumnsService {
     ));
   }
 
-  getCardsForColumn(id: string): Card[] {
-    return this.cardsService.getAll().filter(card => card.columnId === id);
+  getCardsForColumn(id: string): Promise<Card[]> {
+    return this.cardsService.getAll();
   }
 }

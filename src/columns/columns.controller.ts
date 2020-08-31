@@ -16,10 +16,10 @@ import { Request } from "express";
 import { CreateColumnDto } from "./dto/create-column.dto";
 import { ColumnsService } from "./columns.service";
 import { Column } from "./interfaces/column.interface";
-import Card from "src/cards/interfaces/card.interface";
-import { HttpfilterFilter } from "src/filters/httpfilter/httpfilter.filter";
+import { HttpFilter } from "src/filters/http/http.filter";
 import { ParseDtoPipe } from "src/pipes/parse-card-dto/parse-dto.pipe";
 import { ColumnSchema } from "src/schemas/joi/ColumnSchema";
+import { Card } from "src/cards/schemas/card.schema";
 
 @Controller("columns")
 export class ColumnsController {
@@ -44,7 +44,7 @@ export class ColumnsController {
 
   @HttpCode(202)
   @Post("")
-  @UseFilters(HttpfilterFilter)
+  @UseFilters(HttpFilter)
   addColumn(@Body() createColumnDto: CreateColumnDto): Column[] {
     return this.columnsServices.addColumn(createColumnDto);
   }
@@ -63,7 +63,7 @@ export class ColumnsController {
   }
 
   @Get("/cards/:id")
-  getCardsForColumn(@Param("id") id: string): Card[] {
+  getCardsForColumn(@Param("id") id: string): Promise<Card[]> {
     return this.columnsServices.getCardsForColumn(id);
   }
 }

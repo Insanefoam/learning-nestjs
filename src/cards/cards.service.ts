@@ -1,40 +1,34 @@
-import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
-import Card from "./interfaces/card.interface";
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Card } from "./schemas/card.schema";
+import { Model } from "mongoose";
+import { CreateCardDto } from "./dto/create-card.dto";
 
 @Injectable()
 export class CardsService {
-  private cards: Card[] = [
-    { id: "0", title: "Card 0 title", columnId: "0", commentsIds: [] },
-    { id: "1", title: "Card 1 title", columnId: "1", commentsIds: [] },
-    { id: "2", title: "Card 2 title", columnId: "1", commentsIds: [] },
-  ];
+  constructor(@InjectModel(Card.name) private cardModel: Model<Card>) {}
 
-  getAll(): Card[] {
-    return this.cards;
+  getAll(): Promise<Card[]> {
+    return this.cardModel.find().exec();
   }
 
-  getById(id: string): Card {
-    return this.cards.find(card => card.id === id);
+  getById(id: string): Promise<Card> {
+    return this.cardModel.findById(id).exec();
   }
 
-  deleteById(id: string): Card[] {
-    return (this.cards = this.cards.filter(card => card.id !== id));
+  deleteById(id: string): Promise<number> {
+    return this.cardModel
+      .deleteOne({ _id: id })
+      .exec()
+      .then(res => res.ok);
   }
 
-  updateById(newCard: Card): Card[] {
-    return (this.cards = this.cards.map(card =>
-      card.id === newCard.id ? { ...card, ...newCard } : card,
-    ));
+  updateById(newCard: CreateCardDto) {
+    return this.cardModel.updateOne({ title: newCard.title }, newCard).exec();
   }
 
-  addCard(card: Card): Card[] {
-    if (this.cards.find(el => el.id === card.id)) {
-      throw new HttpException(
-        "Card with that ID already exists",
-        HttpStatus.CONFLICT,
-      );
-    } else {
-      return (this.cards = [...this.cards, card]);
-    }
+  addCard(card: CreateCardDto): Promise<Card> {
+    const newCard = new this.cardModel(card);
+    return newCard.save();
   }
 }
