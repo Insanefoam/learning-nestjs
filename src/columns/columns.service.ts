@@ -18,7 +18,7 @@ export class ColumnsService {
   }
 
   async getById(id: string): Promise<Column> {
-    return this.columnModel.findOne({ _id: id }).exec();
+    return this.columnModel.findById(id).exec();
   }
 
   async addColumn(column: CreateColumnDto): Promise<Column> {

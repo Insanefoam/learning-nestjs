@@ -45,7 +45,9 @@ export class ColumnsController {
   @HttpCode(202)
   @Post("")
   @UseFilters(HttpFilter)
-  addColumn(@Body() createColumnDto: CreateColumnDto): Promise<Column> {
+  addColumn(
+    @Body(new ParseDtoPipe(ColumnSchema)) createColumnDto: CreateColumnDto,
+  ): Promise<Column> {
     return this.columnsServices.addColumn(createColumnDto);
   }
 
