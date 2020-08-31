@@ -45,8 +45,15 @@ export class CardsController {
     return this.cardsService.deleteById(id);
   }
 
-  @Put()
-  updateById(@Param() card: CreateCardDto): Promise<Card[]> {
-    return this.cardsService.updateById(card);
+  @Put(":id")
+  updateById(
+    @Param("id") id: string,
+    @Body(new ParseDtoPipe(CardSchema)) card: CreateCardDto,
+  ): Promise<Card[]> {
+    return this.cardsService.updateById(id, card);
+  }
+
+  getColumnCards(columnId: string): Promise<Card[]> {
+    return this.cardsService.getColumnCards(columnId);
   }
 }

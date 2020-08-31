@@ -15,11 +15,11 @@ import {
 import { Request } from "express";
 import { CreateColumnDto } from "./dto/create-column.dto";
 import { ColumnsService } from "./columns.service";
-import { Column } from "./interfaces/column.interface";
 import { HttpFilter } from "src/filters/http/http.filter";
 import { ParseDtoPipe } from "src/pipes/parse-card-dto/parse-dto.pipe";
 import { ColumnSchema } from "src/schemas/joi/ColumnSchema";
 import { Card } from "src/cards/schemas/card.schema";
+import { Column } from "./schemas/column.schema";
 
 @Controller("columns")
 export class ColumnsController {
@@ -32,25 +32,25 @@ export class ColumnsController {
   }
 
   @Get("")
-  getAll(): Column[] {
+  getAll(): Promise<Column[]> {
     return this.columnsServices.getAll();
   }
 
   @Header("my-header", "oh-my-header")
   @Get(":id")
-  getById(@Req() request: Request, @Param("id") id: string): Column {
+  getById(@Req() request: Request, @Param("id") id: string): Promise<Column> {
     return this.columnsServices.getById(id);
   }
 
   @HttpCode(202)
   @Post("")
   @UseFilters(HttpFilter)
-  addColumn(@Body() createColumnDto: CreateColumnDto): Column[] {
+  addColumn(@Body() createColumnDto: CreateColumnDto): Promise<Column> {
     return this.columnsServices.addColumn(createColumnDto);
   }
 
   @Delete(":id")
-  deleteById(@Param("id") id: string): Column[] {
+  deleteById(@Param("id") id: string): Promise<number> {
     return this.columnsServices.deleteById(id);
   }
 
@@ -58,7 +58,7 @@ export class ColumnsController {
   updateById(
     @Param("id") id: string,
     @Body(new ParseDtoPipe(ColumnSchema)) updateColumnDto: CreateColumnDto,
-  ): Column[] {
+  ) {
     return this.columnsServices.updateById(id, updateColumnDto);
   }
 

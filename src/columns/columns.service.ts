@@ -1,48 +1,43 @@
-import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
-import { Column } from "./interfaces/column.interface";
+import { Injectable } from "@nestjs/common";
 import { CardsService } from "src/cards/cards.service";
 import { Card } from "src/cards/schemas/card.schema";
+import { InjectModel } from "@nestjs/mongoose";
+import { Column } from "./schemas/column.schema";
+import { Model } from "mongoose";
+import { CreateColumnDto } from "./dto/create-column.dto";
 
 @Injectable()
 export class ColumnsService {
-  constructor(private readonly cardsService: CardsService) {}
+  constructor(
+    private readonly cardsService: CardsService,
+    @InjectModel(Column.name) private columnModel: Model<Column>,
+  ) {}
 
-  private columns: Column[] = [
-    { id: "0", title: "Todo" },
-    { id: "1", title: "In Progress" },
-    { id: "2", title: "Done" },
-  ];
-
-  getAll(): Column[] {
-    return this.columns;
+  async getAll(): Promise<Column[]> {
+    return await this.columnModel.find().exec();
   }
 
-  getById(id: string): Column {
-    return this.columns.find(column => column.id === id);
+  async getById(id: string): Promise<Column> {
+    return this.columnModel.findOne({ _id: id }).exec();
   }
 
-  addColumn(column: Column): Column[] {
-    if (this.columns.find(el => el.id === column.id)) {
-      throw new HttpException(
-        "Column with that ID already exists",
-        HttpStatus.CONFLICT,
-      );
-    } else {
-      return (this.columns = [...this.columns, column]);
-    }
+  async addColumn(column: CreateColumnDto): Promise<Column> {
+    const newColumn = new this.columnModel(column);
+    return await newColumn.save();
   }
 
-  deleteById(id: string): Column[] {
-    return (this.columns = this.columns.filter(column => column.id !== id));
+  async deleteById(id: string): Promise<number> {
+    return this.columnModel
+      .remove({ _id: id })
+      .exec()
+      .then(res => res.ok);
   }
 
-  updateById(id: string, newColumn: Column) {
-    return (this.columns = this.columns.map(column =>
-      column.id === id ? { ...column, ...newColumn } : column,
-    ));
+  async updateById(id: string, newColumn: CreateColumnDto) {
+    return this.columnModel.updateOne({ _id: id }, newColumn);
   }
 
-  getCardsForColumn(id: string): Promise<Card[]> {
-    return this.cardsService.getAll();
+  async getCardsForColumn(columnId: string): Promise<Card[]> {
+    return this.cardsService.getColumnCards(columnId);
   }
 }
