@@ -34,4 +34,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # Keys
-src/keys.js
+/src/keys.js
