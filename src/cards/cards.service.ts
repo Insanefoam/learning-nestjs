@@ -35,4 +35,18 @@ export class CardsService {
   async getColumnCards(id: string): Promise<Card[]> {
     return this.cardModel.find({ columnId: id }).exec();
   }
+
+  async addCommentForCard(cardId: string, commentId: string) {
+    return await this.cardModel.updateOne(
+      { _id: cardId },
+      { $push: { commentsIds: commentId } },
+    );
+  }
+
+  async deleteCommentFromCard(cardId: string, commentId: string) {
+    return await this.cardModel.updateOne(
+      { _id: cardId },
+      { $pull: { commentsIds: commentId } },
+    );
+  }
 }
