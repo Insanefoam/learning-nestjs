@@ -24,7 +24,9 @@ export class CardsService {
   }
 
   async updateById(id: string, newCard: CreateCardDto) {
-    return await this.cardModel.updateOne({ _id: id }, newCard).exec();
+    return await this.cardModel
+      .updateOne({ _id: id }, { $set: newCard })
+      .exec();
   }
 
   async addCard(card: CreateCardDto): Promise<Card> {

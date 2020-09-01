@@ -37,7 +37,7 @@ export class CommentsController {
   @Put(":id")
   updateById(
     @Param("id") id: string,
-    @Body(new ParseDtoPipe(CommentSchema)) comment: CreateCommentDTO,
+    @Body() comment: CreateCommentDTO,
   ): Promise<number> {
     return this.commentsService.updateById(id, comment);
   }

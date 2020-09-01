@@ -34,7 +34,7 @@ export class ColumnsService {
   }
 
   async updateById(id: string, newColumn: CreateColumnDto) {
-    return this.columnModel.updateOne({ _id: id }, newColumn);
+    return this.columnModel.updateOne({ _id: id }, { $set: newColumn });
   }
 
   async getCardsForColumn(columnId: string): Promise<Card[]> {

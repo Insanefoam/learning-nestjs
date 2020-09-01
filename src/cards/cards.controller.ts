@@ -48,7 +48,7 @@ export class CardsController {
   @Put(":id")
   updateById(
     @Param("id") id: string,
-    @Body(new ParseDtoPipe(CardSchema)) card: CreateCardDto,
+    @Body() card: CreateCardDto,
   ): Promise<Card[]> {
     return this.cardsService.updateById(id, card);
   }

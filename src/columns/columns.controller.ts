@@ -59,7 +59,7 @@ export class ColumnsController {
   @Put(":id")
   updateById(
     @Param("id") id: string,
-    @Body(new ParseDtoPipe(ColumnSchema)) updateColumnDto: CreateColumnDto,
+    @Body() updateColumnDto: CreateColumnDto,
   ) {
     return this.columnsServices.updateById(id, updateColumnDto);
   }

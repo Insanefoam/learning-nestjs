@@ -29,7 +29,7 @@ export class CommentsService {
   }
 
   async updateById(id: string, comment: CreateCommentDTO): Promise<number> {
-    return await this.commentsModel.updateOne({ _id: id }, comment);
+    return await this.commentsModel.updateOne({ _id: id }, { $set: comment });
   }
 
   async deleteById(id: string) {
